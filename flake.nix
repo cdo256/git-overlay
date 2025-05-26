@@ -23,7 +23,7 @@
         { pkgs, ... }:
         {
           packages = rec {
-            git-overlay = makeOverridable (import ./package.nix) { inherit pkgs; };
+            git-overlay = makeOverridable (import ./package.nix) { inherit pkgs inputs; };
             default = git-overlay;
           };
         };

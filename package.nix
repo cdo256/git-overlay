@@ -1,19 +1,18 @@
 {
-  lib,
-  stdenv,
-  coreutils,
-  git,
-  gnugrep,
-  gnused,
-  makeWrapper,
+  inputs,
+  pkgs,
 }:
 
-stdenv.mkDerivation rec {
+let
+  inherit (inputs.nixpkgs) lib;
+in
+
+pkgs.stdenv.mkDerivation rec {
   pname = "git-overlay";
   version = "0.1.0";
 
   src = ./.;
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ pkgs.makeWrapper ];
 
   dontBuild = true;
 
@@ -23,10 +22,10 @@ stdenv.mkDerivation rec {
   '';
 
   wrapperPath = lib.makeBinPath [
-    coreutils
-    git
-    gnugrep
-    gnused
+    pkgs.coreutils
+    pkgs.git
+    pkgs.gnugrep
+    pkgs.gnused
   ];
 
   postFixup = ''
