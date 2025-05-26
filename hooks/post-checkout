@@ -1,0 +1,14 @@
+#!/bin/bash
+
+prev_branch=$1
+new_branch=$3
+
+# Trigger only when switching branches (not files)
+if [ "$prev_branch" != "$new_branch" ] && [[ "$new_branch" != *-local ]]; then
+  local_branch="${new_branch}-local"
+  if git show-ref --verify --quiet "refs/heads/${local_branch}"; then
+    git checkout "$local_branch" --quiet
+    git rebase "$new_branch"
+    git checkout "$new_branch" --quiet
+  fi
+fi

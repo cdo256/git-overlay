@@ -1,0 +1,10 @@
+#!/bin/bash
+# .git/hooks/pre-push
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if [[ "$remote_ref" == *-local ]]; then
+    echo "Error: Pushing local branches (-local) is disabled."
+    exit 1
+  fi
+done
+

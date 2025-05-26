@@ -1,0 +1,8 @@
+#!/bin/bash
+# .git/hooks/pre-merge
+
+merge_target=$(git rev-parse --abbrev-ref MERGE_HEAD 2>/dev/null)
+if [[ "$merge_target" == *-local ]]; then
+  echo "Error: Merging into local branches (-local) is disabled."
+  exit 1
+fi

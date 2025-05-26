@@ -1,0 +1,20 @@
+#!/bin/bash
+
+base_branch="main"
+local_branch="main-local"
+
+# Checkout base branch and pull updates
+git checkout "$base_branch"
+git pull
+
+# Identify non-LOCAL commits
+commit_list=$(git log "$base_branch..$local_branch" --format="%H %s" | grep -v "\[LOCAL\]" | tac | awk '{print $1}')
+
+# Cherry-pick non-LOCAL commits to base branch
+for commit in $commit_list; do
+  git cherry-pick "$commit" || exit 1
+done
+
+# Clean up local branch
+git checkout "$local_branch"
+git rebase --onto "$base_branch" "$(git merge-base "$local_branch" "$base_branch")^"

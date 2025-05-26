@@ -1,0 +1,12 @@
+#!/bin/bash
+
+current_branch=$(git symbolic-ref --short HEAD)
+if [[ "$current_branch" != *-local ]]; then
+  local_branch="${current_branch}-local"
+  if git show-ref --verify --quiet "refs/heads/${local_branch}"; then
+    git checkout "$local_branch" --quiet
+    git rebase "$current_branch"
+    git checkout "$current_branch" --quiet
+  fi
+fi
+

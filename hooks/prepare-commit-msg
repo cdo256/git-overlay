@@ -1,0 +1,7 @@
+#!/bin/bash
+# .git/hooks/prepare-commit-msg
+
+branch=$(git symbolic-ref --short HEAD)
+if [[ "$branch" == *-local ]]; then
+  sed -i '1s/^/[LOCAL] /' "$1"
+fi
